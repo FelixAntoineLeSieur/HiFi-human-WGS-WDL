@@ -1,5 +1,6 @@
 {
   "upstream.sample_id": "String",
+  "upstream.prealigned_bam": "File",
   "upstream.sex": "String? (optional)",
   "upstream.hifi_reads": "Array[File]",
   "upstream.ref_map_file": "File",

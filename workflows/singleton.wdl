@@ -17,6 +17,9 @@ workflow humanwgs_singleton {
     sample_id: {
       name: "Unique identifier for the sample"
     }
+    prealigned_bam: {
+      name: "Name of Output directory where the aligned bam is"
+    }
     sex: {
       name: "Sample sex",
       choices: ["MALE", "FEMALE"]
@@ -69,6 +72,7 @@ workflow humanwgs_singleton {
 
   input {
     String sample_id
+    File prealigned_bam
     String? sex
     Array[File] hifi_reads
 
@@ -107,14 +111,15 @@ workflow humanwgs_singleton {
 
   call Upstream.upstream {
     input:
-      sample_id                     = sample_id,
-      sex                           = sex,
-      hifi_reads                    = hifi_reads,
-      ref_map_file                  = ref_map_file,
+      sample_id                    = sample_id,
+      sex                          = sex,
+      prealigned_bam               = prealigned_bam,
+      hifi_reads                   = hifi_reads,
+      ref_map_file                 = ref_map_file,
       max_reads_per_alignment_chunk = max_reads_per_alignment_chunk,
-      single_sample                 = true,
-      gpu                           = gpu,
-      default_runtime_attributes    = default_runtime_attributes
+      single_sample                = true,
+      gpu                          = gpu,
+      default_runtime_attributes   = default_runtime_attributes
   }
 
   call Downstream.downstream {

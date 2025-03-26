@@ -19,6 +19,9 @@ workflow upstream {
     sample_id: {
       name: "Sample ID"
     }
+    prealigned_bam: {
+      name: "Name of Output directory where the aligned bam is"
+    }
     sex: {
       name: "Sample sex",
       choices: ["MALE", "FEMALE"]
@@ -64,13 +67,13 @@ workflow upstream {
   scatter (hifi_read_bam in hifi_reads) {
     call Pbmm2.pbmm2 as pbmm2 {
       input:
-        sample_id                  = sample_id,
-        bam                        = hifi_read_bam,
-        max_reads_per_chunk        = max_reads_per_alignment_chunk,
-        ref_fasta                  = ref_map["fasta"],              # !FileCoercion
-        ref_index                  = ref_map["fasta_index"],        # !FileCoercion
-        ref_name                   = ref_map["name"],
-        default_runtime_attributes = default_runtime_attributes
+        prealigned_bam     = prealigned_bam
+        sample_id          = sample_id,
+        bam                = hifi_read_bam,
+        ref_fasta          = ref_map["fasta"],       # !FileCoercion
+        ref_index          = ref_map["fasta_index"], # !FileCoercion
+        ref_name           = ref_map["name"],
+        runtime_attributes = default_runtime_attributes
     }
   }
 

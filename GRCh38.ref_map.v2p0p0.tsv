@@ -1,0 +1,12 @@
+name	GRCh38
+fasta	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/human_GRCh38_no_alt_analysis_set.fasta
+fasta_index	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/human_GRCh38_no_alt_analysis_set.fasta.fai
+pbsv_splits	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/human_GRCh38_no_alt_analysis_set.pbsv_splits.json
+pbsv_tandem_repeat_bed	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/human_GRCh38_no_alt_analysis_set.trf.bed
+trgt_tandem_repeat_bed	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/trgt/human_GRCh38_no_alt_analysis_set.trgt.v0.3.4.bed
+hificnv_exclude_bed	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/hificnv/cnv.excluded_regions.common_50.hg38.bed.gz
+hificnv_exclude_bed_index	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/hificnv/cnv.excluded_regions.common_50.hg38.bed.gz.tbi
+hificnv_expected_bed_male	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/hificnv/expected_cn.hg38.XY.bed
+hificnv_expected_bed_female	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/hificnv/expected_cn.hg38.XX.bed
+pharmcat_positions_vcf	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/pharmcat/pharmcat_positions_2.15.4.vcf.bgz
+pharmcat_positions_vcf_index	/home/felixant/scratch/MINIWDL/hifi-wdl-resources-v2.0.0/GRCh38/pharmcat/pharmcat_positions_2.15.4.vcf.bgz.csi
