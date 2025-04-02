@@ -16,11 +16,11 @@ workflow upstream {
   }
 
   parameter_meta {
+    prealigned_bams: {
+      name: "Name of Output directory where the aligned bam is"
+    }
     sample_id: {
       name: "Sample ID"
-    }
-    prealigned_bam: {
-      name: "Name of Output directory where the aligned bam is"
     }
     sex: {
       name: "Sample sex",
@@ -47,6 +47,7 @@ workflow upstream {
   }
 
   input {
+    Array[File] prealigned_bams
     String sample_id
     String? sex
     Array[File] hifi_reads
@@ -63,13 +64,16 @@ workflow upstream {
   }
 
   Map[String, String] ref_map = read_map(ref_map_file)
-
-  scatter (hifi_read_bam in hifi_reads) {
-    call Pbmm2.pbmm2 as pbmm2 {
+  
+  scatter (pair in zip(hifi_reads,prealigned_bams)) {
+    File prealigned_bam     = pair.right
+    File prealigned_bam_bai = "~{prealigned_bam}.bai"
+    call Pbmm2.pbmm2_align_wgs as pbmm2_align {
       input:
-        prealigned_bam     = prealigned_bam
+        prealigned_bam     = prealigned_bam,
+        prealigned_bam_bai = prealigned_bam_bai,
         sample_id          = sample_id,
-        bam                = hifi_read_bam,
+        bam                = pair.left,
         ref_fasta          = ref_map["fasta"],       # !FileCoercion
         ref_index          = ref_map["fasta_index"], # !FileCoercion
         ref_name           = ref_map["name"],

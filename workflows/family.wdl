@@ -17,7 +17,7 @@ workflow humanwgs_family {
 
   parameter_meta {
     family: {
-      name: "Family struct describing samples, relationships, and unaligned BAM paths"
+      name: "Family struct describing samples, relationships, and --unaligned-- PREALIGNED BAM paths"
     }
     phenotypes: {
       name: "Comma-delimited list of HPO codes for phenotypes"
@@ -112,20 +112,24 @@ workflow humanwgs_family {
   }
 
   scatter (sample in family.samples) {
+    Array[File] prealigned_bam = sample.prealigned_bam
+
     String sample_id = sample.sample_id
     Boolean is_trio_kid = defined(sample.father_id) && defined(sample.mother_id)  # !UnusedDeclaration
     Boolean is_duo_kid = defined(sample.father_id) != defined(sample.mother_id)   # !UnusedDeclaration
 
     call Upstream.upstream {
       input:
-        sample_id                     = sample.sample_id,
-        sex                           = sample.sex,
-        hifi_reads                    = sample.hifi_reads,
-        ref_map_file                  = ref_map_file,
+        sample_id                    = sample.sample_id,
+        sex                          = sample.sex,
+        prealigned_bams              = sample.prealigned_bams,
+        prealigned_bam_bai           = prealigned_bam_bai,
+        hifi_reads                   = sample.hifi_reads,
+        ref_map_file                 = ref_map_file,
         max_reads_per_alignment_chunk = max_reads_per_alignment_chunk,
-        single_sample                 = single_sample,
-        gpu                           = gpu,
-        default_runtime_attributes    = default_runtime_attributes
+        single_sample                = single_sample,
+        gpu                          = gpu,
+        default_runtime_attributes   = default_runtime_attributes
     }
 
     # write sample metadata similar to pedigree format
