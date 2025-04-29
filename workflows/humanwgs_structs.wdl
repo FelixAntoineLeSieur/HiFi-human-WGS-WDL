@@ -7,7 +7,7 @@ struct Sample {
   Boolean affected
 
   Array[File] hifi_reads
-  Array[File] prealigned_bam
+  Array[File] prealigned_bams
 
   String? father_id
   String? mother_id

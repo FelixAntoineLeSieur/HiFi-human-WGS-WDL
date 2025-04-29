@@ -112,8 +112,7 @@ workflow humanwgs_family {
   }
 
   scatter (sample in family.samples) {
-    Array[File] prealigned_bam = sample.prealigned_bam
-
+    Array[File] prealigned_bams = sample.prealigned_bams
     String sample_id = sample.sample_id
     Boolean is_trio_kid = defined(sample.father_id) && defined(sample.mother_id)  # !UnusedDeclaration
     Boolean is_duo_kid = defined(sample.father_id) != defined(sample.mother_id)   # !UnusedDeclaration
@@ -122,8 +121,7 @@ workflow humanwgs_family {
       input:
         sample_id                    = sample.sample_id,
         sex                          = sample.sex,
-        prealigned_bams              = sample.prealigned_bams,
-        prealigned_bam_bai           = prealigned_bam_bai,
+        prealigned_bams              = prealigned_bams,
         hifi_reads                   = sample.hifi_reads,
         ref_map_file                 = ref_map_file,
         max_reads_per_alignment_chunk = max_reads_per_alignment_chunk,
@@ -207,6 +205,21 @@ workflow humanwgs_family {
   }
 
   if (defined(tertiary_map_file)) {
+    scatter (sample in family.samples) {
+      Array[File] hifi_reads = sample.hifi_reads
+      #Array[File] prealigned_bams = sample.prealigned_bams
+      #File prealigned_bam_bai = "~{prealigned_bam}.bai"
+    }
+
+    call Write_ped_phrank.write_ped_phrank {
+      input:
+        id                 = family.family_id,
+        family             = family,
+        phenotypes         = phenotypes,
+        disk_size          = ceil(size(flatten(hifi_reads), "GB")) + 10,
+        runtime_attributes = default_runtime_attributes
+    }
+
     call TertiaryAnalysis.tertiary_analysis {
       input:
         sample_metadata            = sample_metadata,
