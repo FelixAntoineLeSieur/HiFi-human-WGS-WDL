@@ -333,9 +333,10 @@ task slivar_small_variant {
   ]
 
   String vcf_basename = basename(vcf, ".vcf.gz")
-
-  Int threads   = 8
-  Int mem_gb    = 16
+  #Initially 8 threads, 26% efficiency
+  #Cases of OOM failures with 16Gb ram
+  Int threads   = 4
+  Int mem_gb    = 20
   Int disk_size = ceil((size(vcf, "GB") + size(reference, "GB") + size(gnotate_files, "GB") + size(gff, "GB") + size(lof_lookup, "GB") + size(clinvar_lookup, "GB") + size(phrank_lookup, "GB")) * 2 + 20)
 
   command <<<
@@ -407,7 +408,8 @@ task slivar_small_variant {
     bcftools index \
       --threads ~{threads - 1} \
       --tbi ~{vcf_basename}.norm.slivar.compound_hets.vcf.gz
-
+    echo "Starting TSV"
+    ls
     slivar tsv \
       --info-field ~{sep=' --info-field ' info_fields} \
       --sample-field dominant \
@@ -420,11 +422,12 @@ task slivar_small_variant {
       --gene-description ~{clinvar_lookup} \
       --gene-description ~{phrank_lookup} \
       --ped ~{write_tsv(sample_metadata)} \
-      --out /dev/stdout \
-      ~{vcf_basename}.norm.slivar.vcf.gz \
-    | sed '1 s/gene_description_1/pLI/;s/gene_description_2/oe.lof/;s/gene_description_3/LOEUF/;s/gene_description_4/LOEUF_decile/;s/gene_description_5/clinvar/;s/gene_description_6/phrank/;' \
+      --out ~{vcf_basename}.norm.slivar.Inter.tsv \
+      ~{vcf_basename}.norm.slivar.vcf.gz
+    echo "Finished TSV, starting sed"
+    sed '1 s/gene_description_1/pLI/;s/gene_description_2/oe.lof/;s/gene_description_3/LOEUF/;s/gene_description_4/LOEUF_decile/;s/gene_description_5/clinvar/;s/gene_description_6/phrank/;' ~{vcf_basename}.norm.slivar.Inter.tsv \
     > ~{vcf_basename}.norm.slivar.tsv
-
+    echo "Finished sed, starting compound het tsv"
     slivar tsv \
       --info-field ~{sep=' --info-field ' info_fields} \
       --sample-field slivar_comphet \
@@ -437,9 +440,10 @@ task slivar_small_variant {
       --gene-description ~{clinvar_lookup} \
       --gene-description ~{phrank_lookup} \
       --ped ~{write_tsv(sample_metadata)} \
-      --out /dev/stdout \
-      ~{vcf_basename}.norm.slivar.compound_hets.vcf.gz \
-    | sed '1 s/gene_description_1/pLI/;s/gene_description_2/oe.lof/;s/gene_description_3/LOEUF/;s/gene_description_4/LOEUF_decile/;s/gene_description_5/clinvar/;s/gene_description_6/phrank/;' \
+      --out ~{vcf_basename}.norm.slivar.Inter.compound_hets.tsv \
+      ~{vcf_basename}.norm.slivar.compound_hets.vcf.gz 
+    echo "Finished compound het tsv, starting sed"
+    sed '1 s/gene_description_1/pLI/;s/gene_description_2/oe.lof/;s/gene_description_3/LOEUF/;s/gene_description_4/LOEUF_decile/;s/gene_description_5/clinvar/;s/gene_description_6/phrank/;' ~{vcf_basename}.norm.slivar.Inter.compound_hets.tsv \
     > ~{vcf_basename}.norm.slivar.compound_hets.tsv
   >>>
 
@@ -509,9 +513,9 @@ task svpack_filter_annotated {
 
     RuntimeAttributes runtime_attributes
   }
-
+  #Initially 16Gb ram 37% efficiency
   Int threads   = 2
-  Int mem_gb    = 16
+  Int mem_gb    = 8
   Int disk_size = ceil(size(sv_vcf, "GB") * 2 + 20)
 
   String out_prefix = basename(sv_vcf, ".vcf.gz")
