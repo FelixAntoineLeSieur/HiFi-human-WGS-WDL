@@ -171,6 +171,7 @@ task mosdepth {
     docker: "~{runtime_attributes.container_registry}/mosdepth@sha256:f4edf52e6a31eb18f1755e8cb90224fec6aa88e4a4353a673b16a89f59cbe822"  # 0.3.14_build1
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "300"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

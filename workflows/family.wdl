@@ -641,7 +641,7 @@ workflow humanwgs_family {
     File? trgt_tandem_repeat_bed_override
     File? methbat_region_tsv_override
     Boolean use_alignment_chunking = true
-    Int glnexus_mem_gb = 60
+    Int glnexus_mem_gb = 48
     Boolean use_gpu = false
     Boolean use_parabricks_deepvariant = false
 

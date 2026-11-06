@@ -83,6 +83,7 @@ task mitorsaw {
     docker: "~{runtime_attributes.container_registry}/mitorsaw@sha256:9b610f343ae018b21c86977259d91dba587e1f22d7a73e115937e428d3c7adeb"  # 0.2.13
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "300"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

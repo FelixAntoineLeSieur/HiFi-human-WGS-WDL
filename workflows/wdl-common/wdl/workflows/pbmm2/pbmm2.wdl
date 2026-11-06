@@ -142,6 +142,7 @@ task create_pbmm2_index {
     docker: "~{runtime_attributes.container_registry}/pbmm2@sha256:86e39aa67fa5d385769d5f119739e8811ce550163e3b9dfc42bd58d1fecdf3a8"  # 26.2.99_build1
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -257,6 +258,7 @@ task index_input_bam {
     docker: "~{runtime_attributes.container_registry}/pbtk@sha256:f27bafa0ae6ffff6170d45a86a5677406320c7866760391f89ebe900a74d2039"  # 3.5.0_build2
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "120"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -381,6 +383,7 @@ task pbmm2_align_wgs {
     docker: "~{runtime_attributes.container_registry}/pbmm2@sha256:86e39aa67fa5d385769d5f119739e8811ce550163e3b9dfc42bd58d1fecdf3a8"  # 26.2.99_build1
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "45"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

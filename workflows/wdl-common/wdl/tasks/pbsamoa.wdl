@@ -75,6 +75,7 @@ task pbsamoa_merge {
     docker: "~{runtime_attributes.container_registry}/pbsamoa@sha256:cf70c89422d63c3a4e4b2ffd912160c3e7481303a211cd6134236fe6e9f9461f"  # 20260811_build1
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "300"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

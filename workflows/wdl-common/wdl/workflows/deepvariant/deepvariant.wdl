@@ -235,7 +235,8 @@ task deepvariant_make_examples {
     Boolean gvcf_output
     String docker_image
     Int threads_per_task = 1
-    Int mem_gb_per_task = 4
+    # v3.2 tuning: 38 GB total (8 tasks/shard); OOM at 4 GB/task
+    Int mem_gb_per_task = 5
     RuntimeAttributes runtime_attributes
   }
 
@@ -318,6 +319,7 @@ task deepvariant_make_examples {
     docker: docker_image
     cpu: tasks_per_shard * threads_per_task
     memory: "~{tasks_per_shard * mem_gb_per_task} GiB"
+    time_minutes: "120"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -375,7 +377,8 @@ task deepvariant_call_variants_cpu {
     String docker_image
     Int threads = 64
     Int writer_threads = 8
-    Int mem_gb = 28
+    # v3.2 tuning: upstream 28 GB; 256 GB was ~10% efficient, 128 GB ~21%
+    Int mem_gb = 48
     RuntimeAttributes runtime_attributes
   }
 
@@ -407,6 +410,7 @@ task deepvariant_call_variants_cpu {
     docker: docker_image
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "180"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -497,6 +501,7 @@ task deepvariant_call_variants_gpu {
     docker: docker_image
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "180"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     bootDiskSizeGb: 30  # !UnknownRuntimeKey
@@ -581,8 +586,9 @@ task deepvariant_postprocess_variants {
     String ref_name
     Int total_deepvariant_tasks
     String docker_image
-    Int threads = 8
-    Int mem_gb = 48
+    # v3.2 tuning: upstream 8 threads/48 GB
+    Int threads = 4
+    Int mem_gb = 64
     RuntimeAttributes runtime_attributes
   }
 
@@ -669,6 +675,7 @@ task deepvariant_postprocess_variants {
     docker: docker_image
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "240"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

@@ -41,7 +41,8 @@ task samtools_merge {
     String out_prefix
     Int compression_level = -1
     Int threads = 16
-    Int mem_gb = 16
+    # v3.2 tuning: upstream 16 GB
+    Int mem_gb = 8
     RuntimeAttributes runtime_attributes
   }
 
@@ -74,6 +75,7 @@ task samtools_merge {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "300"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -151,6 +153,7 @@ task samtools_fasta {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "120"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -207,7 +210,8 @@ task subset_reference {
     File ref_index
     String out_prefix
     Int threads = 4
-    Int mem_gb = 8
+    # v3.2 tuning: upstream 8 GB
+    Int mem_gb = 1
     RuntimeAttributes runtime_attributes
   }
 
@@ -243,6 +247,7 @@ task subset_reference {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "30"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -309,7 +314,8 @@ task subset_bam {
     Int slop_size = 10000
     String out_prefix
     Int threads = 4
-    Int mem_gb = 8
+    # v3.2 tuning: upstream 8 GB
+    Int mem_gb = 1
     RuntimeAttributes runtime_attributes
   }
 
@@ -354,6 +360,7 @@ task subset_bam {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -433,6 +440,7 @@ task samtools_reset {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "120"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

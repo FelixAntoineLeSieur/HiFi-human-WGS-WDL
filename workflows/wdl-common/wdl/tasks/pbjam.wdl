@@ -142,6 +142,7 @@ task pbjam_bam_stats {
     docker: "~{runtime_attributes.container_registry}/pbjam@sha256:1b90537ed6683ac7b89002c0f59e940b4ea46c600d292904f549af1ae2760bba"  # 0.4.1_build2
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "120"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

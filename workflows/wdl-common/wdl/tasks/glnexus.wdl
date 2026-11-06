@@ -48,8 +48,9 @@ task glnexus {
     Array[File] gvcf_indices
     String ref_name
     File? regions_bed
-    Int threads = 32
-    Int mem_gb = 60
+    # v3.2 tuning: upstream 32 threads/60 GB
+    Int threads = 12
+    Int mem_gb = 48
     RuntimeAttributes runtime_attributes
   }
 
@@ -168,6 +169,7 @@ task glnexus {
     docker: "~{runtime_attributes.container_registry}/glnexus@sha256:ce6fecf59dddc6089a8100b31c29c1e6ed50a0cf123da9f2bc589ee4b0c69c8e"  # 1.4.3
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "240"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

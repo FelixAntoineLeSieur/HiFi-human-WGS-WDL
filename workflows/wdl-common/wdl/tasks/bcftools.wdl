@@ -73,8 +73,9 @@ task bcftools_stats_roh_small_variants {
     String ref_name
     Int min_length = 100000
     Int min_qual = 20
-    Int threads = 2
-    Int mem_gb = 4
+    # v3.2 tuning: initially 2 threads/4 GB, 23-44% efficiency
+    Int threads = 1
+    Int mem_gb = 2
     RuntimeAttributes runtime_attributes
   }
 
@@ -212,6 +213,7 @@ task bcftools_stats_roh_small_variants {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -312,6 +314,7 @@ task split_vcf_by_sample {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -403,6 +406,7 @@ task bcftools_merge {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -473,8 +477,9 @@ task sv_stats {
     File vcf
     Int min_length = 50
     Int max_scar_length = 10
-    Int threads = 2
-    Int mem_gb = 4
+    # v3.2 tuning: initially 2 threads/4 GB, 3% efficiency
+    Int threads = 1
+    Int mem_gb = 1
     RuntimeAttributes runtime_attributes
   }
 
@@ -670,6 +675,7 @@ task sv_stats {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -756,6 +762,7 @@ task bcftools_rename {
     docker: "~{runtime_attributes.container_registry}/pb_wdl_base@sha256:03cb3c01937eccc907f8ad71c87b258581504572205fe3f31a657e318f3564ae"  # pb_wdl_base:build4
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

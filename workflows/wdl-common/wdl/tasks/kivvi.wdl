@@ -107,6 +107,7 @@ task kivvi_kiv2 {
     docker: "~{runtime_attributes.container_registry}/kivvi@sha256:9e4a390821ea999af9b3faa483c5f7dce58041c439a35e4af3676f25edecd204"  # 1.1.0
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -221,6 +222,7 @@ task kivvi_d4z4 {
     docker: "~{runtime_attributes.container_registry}/kivvi@sha256:9e4a390821ea999af9b3faa483c5f7dce58041c439a35e4af3676f25edecd204"  # 1.1.0
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

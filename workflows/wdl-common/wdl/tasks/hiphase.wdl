@@ -122,8 +122,9 @@ task hiphase {
     Boolean disable_global_realignment = false
     Boolean no_supplemental_joins = false
     Boolean phase_singletons = false
-    Int threads = 16
-    Int mem_gb = 96
+    # v3.2 tuning: upstream 16 threads/96 GB, 22-40% efficiency
+    Int threads = 14
+    Int mem_gb = threads * 4
     RuntimeAttributes runtime_attributes
   }
 
@@ -226,6 +227,7 @@ task hiphase {
     docker: "~{runtime_attributes.container_registry}/hiphase@sha256:41ebe22b55c66e2e78da2013f7fffaecc02a8b4e980400c3ea8d03c87330522e"  # 1.7.0_build2
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "360"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

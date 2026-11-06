@@ -170,6 +170,7 @@ task methbat_pileup {
     docker: "~{runtime_attributes.container_registry}/methbat@sha256:281569947c0a6154f9a6bdaa1bb5f1e67dd160ccb49028d3218a49a37a0488fb"  # 1.1.0_build2
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "120"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -262,6 +263,7 @@ task methbat_profile {
     docker: "~{runtime_attributes.container_registry}/methbat@sha256:281569947c0a6154f9a6bdaa1bb5f1e67dd160ccb49028d3218a49a37a0488fb"  # 1.1.0_build2
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "60"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries

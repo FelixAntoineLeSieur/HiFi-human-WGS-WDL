@@ -77,7 +77,8 @@ task sawfish_discover {
     File expected_female_bed
     String out_prefix
     Int threads = 16
-    Int mem_gb = 128
+    # v3.2 tuning: upstream 128 GB (threads * 8)
+    Int mem_gb = 240
     RuntimeAttributes runtime_attributes
   }
 
@@ -127,6 +128,7 @@ task sawfish_discover {
     docker: "~{runtime_attributes.container_registry}/sawfish@sha256:5cf8f02790ecb89e652885c57f103fc9597c41f75ee71be2c05510cbbdf68f59"  # 2.2.1_build2
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "120"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
@@ -225,7 +227,8 @@ task sawfish_call {
     Array[String] depth_bw_names
     Array[String] gc_bias_corrected_depth_bw_names
     Array[String] copynum_summary_names
-    Int threads = 16
+    # v3.2 tuning: upstream 16 threads
+    Int threads = 8
     Int mem_gb = 32
     RuntimeAttributes runtime_attributes
   }
@@ -323,6 +326,7 @@ task sawfish_call {
     docker: "~{runtime_attributes.container_registry}/sawfish@sha256:5cf8f02790ecb89e652885c57f103fc9597c41f75ee71be2c05510cbbdf68f59"  # 2.2.1_build2
     cpu: threads
     memory: "~{mem_gb} GiB"
+    time_minutes: "90"
     disk: "~{disk_size} GB"
     disks: "local-disk ~{disk_size} HDD"
     preemptible: runtime_attributes.preemptible_tries
